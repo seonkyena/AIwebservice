@@ -3,8 +3,8 @@ import tensorflow as tf
 import matplotlib.pyplot as plt
 
 from tensorflow.keras import optimizers, losses
-from module.model import Custom_model
-from module.data import get_train_data, get_train_data_2
+from model import Custom_model
+from data import get_train_data, get_train_data_2
 from tensorflow.keras.callbacks import EarlyStopping
 
 input_size = (224,224,3)
@@ -29,10 +29,12 @@ def main():
             metrics=['acc'])
     
     early_stop = EarlyStopping(monitor='val_loss', patience=3, restore_best_weights=True)
-    his = model.fit(train_x, train_y, validation_data=(val_x, val_y), batch_size=16, epochs=100, callbacks=[early_stop])
+    his = model.fit(train_x, train_y, validation_data=(val_x, val_y), batch_size=10, epochs=100, callbacks=[early_stop])
     model.evaluate(val_x, val_y, batch_size=16, verbose=1)
     
-    model.save('./MobileNet.h5')
+    model.save('./model/21classes.h5')
+    model.save('./model/21classes')
+    print("model saved")
     
     plt.plot(his.history['acc'])
     plt.plot(his.history['val_acc'])
@@ -40,7 +42,7 @@ def main():
     plt.xlabel('Epoch')
     plt.ylabel('Accuracy')
     plt.legend(['Train', 'Test'], loc='upper left')
-    plt.savefig(os.path.join(local_path, './MobileNet_acc.png'))
+    plt.savefig(os.path.join(local_path, './acc/MobileNet21_acc.png'))
 #    plt.show()
     plt.clf()
     
@@ -50,7 +52,7 @@ def main():
     plt.xlabel('Epoch')
     plt.ylabel('Loss')
     plt.legend(['Train', 'Test'], loc='upper left')
-    plt.savefig(os.path.join(local_path, './MobileNet_loss.png'))    
+    plt.savefig(os.path.join(local_path, './loss/MobileNet21_loss.png'))
 #    plt.show()
 
     
